@@ -1,5 +1,7 @@
 package com.example.tarea_clase_android.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -13,7 +15,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -38,19 +41,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.painterResource
+import com.example.tarea_clase_android.R
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tarea_clase_android.ui.theme.Amarillo
-import com.example.tarea_clase_android.ui.theme.AzulLogo
 import com.example.tarea_clase_android.ui.theme.FondoApp
 import com.example.tarea_clase_android.ui.theme.GrisCampo
 import com.example.tarea_clase_android.ui.theme.MoradoBoton
-import com.example.tarea_clase_android.ui.theme.Rojo
 import com.example.tarea_clase_android.ui.theme.TareaclaseandroidTheme
 import kotlin.math.roundToInt
 
@@ -67,20 +69,22 @@ fun LoginScreen(onEnviar: (DatosUsuario) -> Unit, modifier: Modifier = Modifier)
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(FondoApp)
+            .background(Color(0xFFFFF8FF))
             .windowInsetsPadding(WindowInsets.safeDrawing)
+            .background(FondoApp)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 28.dp, vertical = 24.dp),
+            .padding(top = 56.dp, bottom = 42.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LogoPrincipal()
-        Spacer(Modifier.height(44.dp))
+        Spacer(Modifier.height(48.dp))
         TextField(
             value = nombre,
             onValueChange = { nombre = it },
-            placeholder = { Text("Ingrese su nombre", fontSize = 14.sp) },
+            placeholder = { Text("Ingrese su nombre", fontSize = 16.sp) },
             singleLine = true,
-            shape = RoundedCornerShape(8.dp),
+            textStyle = TextStyle(fontSize = 16.sp),
+            shape = RoundedCornerShape(2.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = GrisCampo,
                 unfocusedContainerColor = GrisCampo,
@@ -92,100 +96,82 @@ fun LoginScreen(onEnviar: (DatosUsuario) -> Unit, modifier: Modifier = Modifier)
                 focusedPlaceholderColor = Color(0xFF333333),
                 unfocusedPlaceholderColor = Color(0xFF333333)
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.width(296.dp).height(72.dp)
+                .border(8.dp, Color(0xFF888888), RoundedCornerShape(9.dp))
+                .padding(8.dp)
         )
-        Spacer(Modifier.height(36.dp))
+        Spacer(Modifier.height(24.dp))
         SelectorGenero(genero) { genero = it }
-        Spacer(Modifier.height(28.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                 SliderPunteado(montana) { montana = it }
-                Text("Montaña: $montana", color = Color.White, fontSize = 13.sp)
+                Text("Montaña: $montana", color = Color.White, fontSize = 16.sp)
             }
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                 SliderPunteado(sprint) { sprint = it }
-                Text("Sprint: $sprint", color = Color.White, fontSize = 13.sp)
+                Text("Sprint: $sprint", color = Color.White, fontSize = 16.sp)
             }
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(8.dp))
         Button(
             onClick = { onEnviar(DatosUsuario(nombre.trim(), genero, montana, sprint)) },
+            modifier = Modifier.size(88.dp, 40.dp),
+            contentPadding = PaddingValues(0.dp),
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(containerColor = MoradoBoton)
         ) {
-            Text("Enviar", color = Color.White, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 16.dp))
+            Text("Enviar", color = Color.White, fontSize = 14.sp)
         }
-        Spacer(Modifier.height(40.dp))
+        Spacer(Modifier.height(82.dp))
         LogoUcam()
     }
 }
 
-// Placeholder: sustituir por el logo real en res/drawable cuando esté disponible.
 @Composable
 private fun LogoPrincipal() {
-    Box(
-        modifier = Modifier
-            .size(180.dp)
-            .background(Amarillo)
-    ) {
-        Text(
-            text = "P",
-            color = Rojo,
-            fontSize = 190.sp,
-            fontWeight = FontWeight.Black,
-            modifier = Modifier.offset(x = 6.dp, y = (-40).dp)
-        )
-        Text(
-            text = "ucam",
-            color = AzulLogo,
-            fontSize = 24.sp,
+    Box(Modifier.size(200.dp).background(Color.Yellow)) {
+        Canvas(Modifier.fillMaxSize()) {
+            drawRect(Color.Red, size = Size(size.width * .75f, size.height * .75f))
+            drawRect(Color.Red, topLeft = Offset(0f, size.height * .75f),
+                size = Size(size.width * .25f, size.height * .25f))
+            drawRect(Color.Yellow, topLeft = Offset(size.width * .25f, size.height * .25f),
+                size = Size(size.width * .25f, size.height * .25f))
+        }
+        Text("DM UCAM", color = Color.Blue, fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.BottomStart).padding(start = 8.dp, bottom = 6.dp)
-        )
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 36.dp, bottom = 4.dp))
     }
 }
 
 @Composable
 internal fun LogoUcam() {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = "UCAM",
-            color = Color.White,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Serif
-        )
-        Text(
-            text = "UNIVERSIDAD CATÓLICA DE MURCIA",
-            color = Color.White,
-            fontSize = 9.sp,
-            letterSpacing = 1.sp
-        )
-    }
+    Image(painterResource(R.drawable.ucam_logo),
+        contentDescription = "UCAM, Universidad Católica de Murcia",
+        modifier = Modifier.size(206.dp, 88.dp))
 }
 
 @Composable
 private fun SelectorGenero(genero: String, onGeneroChange: (String) -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 22.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text("Género:", color = Color.White, fontSize = 14.sp)
+        Text("Género:", color = Color.White, fontSize = 18.sp)
         OPCIONES_GENERO.forEach { opcion ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
                     selected = genero == opcion,
                     onClick = { onGeneroChange(opcion) },
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = Amarillo,
+                        selectedColor = Color.White,
                         unselectedColor = Color.White
                     )
                 )
-                Text(opcion, color = Color.White, fontSize = 13.sp)
+                Text(opcion, color = Color.White, fontSize = 12.sp)
             }
         }
     }
@@ -197,7 +183,7 @@ private fun SliderPunteado(valor: Int, modifier: Modifier = Modifier, onValorCha
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(24.dp)
+            .height(44.dp)
             .pointerInput(Unit) {
                 awaitEachGesture {
                     fun actualizar(x: Float) {
@@ -214,25 +200,18 @@ private fun SliderPunteado(valor: Int, modifier: Modifier = Modifier, onValorCha
                 }
             }
     ) {
-        val margen = 6.dp.toPx()
-        val ancho = size.width - 2 * margen
         val y = size.height / 2
-        drawLine(
-            color = Color.White.copy(alpha = 0.5f),
-            start = Offset(margen, y),
-            end = Offset(size.width - margen, y),
-            strokeWidth = 3f,
-            cap = StrokeCap.Round
-        )
-        for (i in 0..(100 / PASO)) {
-            val x = margen + ancho * i / (100 / PASO)
-            val seleccionado = i * PASO == valor
-            drawCircle(
-                color = if (i * PASO <= valor) Color.White else Color.White.copy(alpha = 0.5f),
-                radius = if (seleccionado) 6.dp.toPx() else 4.dp.toPx(),
-                center = Offset(x, y)
-            )
+        val thumb = size.width * valor / 100f
+        val track = 16.dp.toPx()
+        drawRoundRect(MoradoBoton, topLeft = Offset(0f, y - track / 2),
+            size = Size(size.width, track), cornerRadius = androidx.compose.ui.geometry.CornerRadius(track / 2))
+        drawRoundRect(GrisCampo, topLeft = Offset(thumb, y - track / 2),
+            size = Size(size.width - thumb, track), cornerRadius = androidx.compose.ui.geometry.CornerRadius(track / 2))
+        for (i in 0..10) {
+            val x = 7.dp.toPx() + (size.width - 14.dp.toPx()) * i / 10
+            drawCircle(if (x < thumb) GrisCampo else MoradoBoton, 2.dp.toPx(), Offset(x, y))
         }
+        drawLine(MoradoBoton, Offset(thumb, 0f), Offset(thumb, size.height), 4.dp.toPx())
     }
 }
 

@@ -20,7 +20,10 @@ import com.example.tarea_clase_android.ui.theme.TareaclaseandroidTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(Color.rgb(255, 248, 255), Color.rgb(255, 248, 255)),
+            navigationBarStyle = SystemBarStyle.light(Color.rgb(255, 248, 255), Color.rgb(255, 248, 255))
+        )
         setContent {
             TareaclaseandroidTheme {
                 App()
